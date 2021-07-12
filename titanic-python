@@ -1,0 +1,93 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Fri Jul  9 12:52:41 2021
+
+@author: Fmny
+"""
+"""programm which is a python version about Tinatic.r"""
+
+
+#vérification de la version de scikit-learn
+import sklearn
+print(sklearn.__version__)
+
+
+#### Libraries
+
+import os
+
+#affiche le répertoire courant:
+os.getcwd()
+
+path = "C:/Users/Utilisateur/Documents/Python Scripts/Titanic"
+
+path2 = os.getcwd()
+
+#path = path2
+
+path3="C:/Users/Utilisateur/Documents/Python Scripts/Titanic/data/"
+
+#lien utilisation de la fonction sklearn qui remplace rpar sous R
+#lien: http://eric.univ-lyon2.fr/~ricco/tanagra/fichiers/fr_Tanagra_Scikit_Learn_Decision_Tree.pdf
+
+
+
+#importation du jeu de données
+#utilisation de pandas
+import pandas as pd
+titanic1=pd.read_csv(path3 +'titanic.csv',sep=',' ,header=0,encoding='utf-8',dtype=str)
+
+
+#vérification de la version de scikit-learn
+import sklearn
+print(sklearn.__version__)
+
+#dimension du data frame
+print(titanic1.shape)
+
+#information sur les variables
+print(titanic1.info())
+
+
+df=titanic1
+
+
+#vérifier la distribution absolue des classes
+print(df.classe.value_counts())
+
+#la distribution relative
+print(df.classe.value_counts(normalize=True))
+
+
+#instanciation de l'arbre
+from sklearn.tree import DecisionTreeClassifier
+arbreFirst = DecisionTreeClassifier(min_samples_split=30,min_samples_leaf=10)
+
+
+
+#reprendre ici
+#construction de l'arbre
+arbreFirst.fit(X = df, y = df.survived)
+DecisionTreeClassifier(ccp_alpha=0.0, class_weight=None, criterion='gini',
+ max_depth=None, max_features=None, max_leaf_nodes=None,
+ min_impurity_decrease=0.0, min_impurity_split=None,
+min_samples_leaf=10, min_samples_split=30,
+min_weight_fraction_leaf=0.0, presort='deprecated',
+random_state=None, splitter='best')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
