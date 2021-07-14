@@ -27,7 +27,7 @@ path2 = os.getcwd()
 
 path3="C:/Users/Utilisateur/Documents/Python Scripts/Titanic/data/"
 
-#lien utilisation de la fonction sklearn qui remplace rpar sous R
+#lien utilisation de la fonction sklearn qui remplace rpart sous R
 #lien: http://eric.univ-lyon2.fr/~ricco/tanagra/fichiers/fr_Tanagra_Scikit_Learn_Decision_Tree.pdf
 
 
@@ -37,26 +37,43 @@ path3="C:/Users/Utilisateur/Documents/Python Scripts/Titanic/data/"
 import pandas as pd
 titanic1=pd.read_csv(path3 +'titanic.csv',sep=',' ,header=0,encoding='utf-8',dtype=str)
 
+df = pd.pandas.read_csv(path3 +'titanic.csv',sep=",")
+
+#dimension du data frame
+print(df.shape)
+
+
 
 #vérification de la version de scikit-learn
 import sklearn
 print(sklearn.__version__)
 
-#dimension du data frame
-print(titanic1.shape)
 
 #information sur les variables
-print(titanic1.info())
-
-
-df=titanic1
+print(df.info())
 
 
 #vérifier la distribution absolue des classes
-print(df.classe.value_counts())
+print(df.value_counts())
 
-#la distribution relative
-print(df.classe.value_counts(normalize=True))
+#la distribution relative (je ne sais pas ce qu'il fait)
+print(df.value_counts(normalize=True))
+
+#donne la probabilité de mort ou vie
+print(df.survived.value_counts(normalize=True))
+
+#subdiviser les données en échantillons d'apprentissage et de test
+from sklearn.model_selection import train_test_split
+dfTrain, dfTest = train_test_split(df,test_size=300,random_state=1,stratify=df.survived)
+
+
+#vérification des dimensions
+print(dfTrain.shape) #(1009, 7)
+print(dfTest.shape) #(300, 7)
+
+#vérification des distributions en apprentissage
+print(dfTrain.survived.value_counts(normalize=True))
+print(dfTest.survived.value_counts(normalize=True))
 
 
 #instanciation de l'arbre
@@ -67,7 +84,11 @@ arbreFirst = DecisionTreeClassifier(min_samples_split=30,min_samples_leaf=10)
 
 #reprendre ici
 #construction de l'arbre
-arbreFirst.fit(X = df, y = df.survived)
+arbreFirst.fit(X = dfTrain.iloc[:,:-1], y = dfTrain.survived)
+
+
+#arbreFirst.fit(X = df, y = df.survived)
+
 DecisionTreeClassifier(ccp_alpha=0.0, class_weight=None, criterion='gini',
  max_depth=None, max_features=None, max_leaf_nodes=None,
  min_impurity_decrease=0.0, min_impurity_split=None,
