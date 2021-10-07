@@ -1,6 +1,6 @@
 - 👋 Hi, I’m @fmny
 - 👀 I’m interested in data science
-- 🌱 I’m currently learning Python
+- 🌱 I’m currently learning R and Python
 - 💞️ I’m looking to collaborate on Python
 - 📫 How to reach me f_mauny@hotmail.fr
 
