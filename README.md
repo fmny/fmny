@@ -1,7 +1,7 @@
 - 👋 Hi, I’m @fmny
 - 👀 I’m interested in data science
 - 🌱 I’m currently learning R and Python
-- 💞️ I’m looking to collaborate on Python
+- 💞️ I’m looking for collaborate on Python
 - 📫 How to reach me f_mauny@hotmail.fr
 
 <!---
