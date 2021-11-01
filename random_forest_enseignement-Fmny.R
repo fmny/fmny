@@ -169,3 +169,6 @@ conf$byClass["Sensitivity"] #taux de vrais positifs
 #lecture du tableau
 # on a donc 7439 Contractuel bien predit et 337 mal predit (etaient des titulaires)
 #les bonnes predictions sont sur la diagonale
+
+#Accuracy : 0.9587  taux de bonnes predictions
+
