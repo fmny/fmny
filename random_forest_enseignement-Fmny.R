@@ -1,5 +1,5 @@
 ################################################################
-#Utilisation de RandomForest en vue de faire de la prévision:
+#Utilisation de RandomForest en vue de faire de la pr?vision:
 ###############################################################
 
 #lien
@@ -8,7 +8,7 @@
 
 #import du fichier CSv sans accent 
 
-#Chemin à modifier
+#Chemin ? modifier
 setwd("C:\\Users\\Francis\\R_new\\random forest\\data-enseignement")
 #verification
 #getwd()
@@ -25,7 +25,7 @@ library(dplyr)      # pour mutate_at et %>%
 library(tidyverse)
 library(tidyr)      # pour unnest et separate
 library(caret)
-#dplyr contient les opérateurs %>% qui permettent le data wrangling (opération sur la BDD)
+#dplyr contient les op?rateurs %>% qui permettent le data wrangling (op?ration sur la BDD)
 
 
 
@@ -38,24 +38,24 @@ educ_small <- educ %>%
 
 
 
-#faire tourner ces opérations 1 par 1 pour comprendre le data wrangling
+#faire tourner ces op?rations 1 par 1 pour comprendre le data wrangling
 
 educ_small_test <- educ_small %>% 
   mutate(Idx = 1:n()) %>%
-  group_by(Idx) %>% #ne sert à rien
+  group_by(Idx) %>% #ne sert ? rien
 mutate( Agent = list(rep( Sexe, Nombre.agents) ) ) %>%
-unnest() %>% # explose la base de maniere à avoir 87123 ligne (cad le nb d agent)
+unnest() %>% # explose la base de maniere ? avoir 87123 ligne (cad le nb d agent)
 ungroup() %>% #ne sert a rien
 select(-Idx) #retire la colonne Idx
 
 
 sum(educ_small$Nombre.agents)
 #[1] 43510    #sur le site data ancienne
-#[1] 87123    #résultat FM
+#[1] 87123    #r?sultat FM
 
 nrow(educ_small)
 #[1] 16248    #sur le site data ancienne
-#[1] 32107    #résultat FM
+#[1] 32107    #r?sultat FM
 
 
 
@@ -86,6 +86,12 @@ educ_small2$Borne.inferieure.de.la.tranche.age = factor(educ_small2$Borne.inferi
 educ_small2$Code.region=factor(educ_small2$Code.region)
 educ_small2$Agent=factor(educ_small2$Agent)
 
+#attention ici, le fait d avoir d avoir demultiplie la base pour avoir un enregistrement
+#par enseignant a cree des doublons dans la colonne Idx
+#de sortes que anti_join ne fonctionnait pas
+
+educ_small2$Idx<-1:nrow(educ_small2)
+
 
 set.seed(2811)
 
@@ -110,7 +116,7 @@ model$importance
 varImpPlot(model)
 
 ############################################################
-#Utilisation de notre randomForest pour faire une prédiction
+#Utilisation de notre randomForest pour faire une pr?diction
 ############################################################
 
 set.seed(2811)
@@ -128,7 +134,7 @@ nrow(test)
 #Contractuel        1446       172    (1618)
 #Titulaire           104      1928    (2032)
 #                   1550      2100    (3650)
-#vraie val          1563      2145    (3708) écart des NA en colonnes  
+#vraie val          1563      2145    (3708) ?cart des NA en colonnes  
 
 #lecture du tableau
 # on a donc 1446 Contractuel bien predit et 172 mal predit (etaient des titulaires)
@@ -151,7 +157,7 @@ conf$byClass["Sensitivity"] #taux de vrais positifs
 
 #0.9329032 taux de bonnes predictions pour les contractuel (1446/1550 (sans les NA))
 
-conf$byClass["Specificity"] #taux de vrais négatifs
+conf$byClass["Specificity"] #taux de vrais n?gatifs
 #Specificity 
 #0.9180952 = 1928/2100 taux de bonnes predictions pour les titulaires
 
