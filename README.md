@@ -1,4 +1,4 @@
-- 👋 Hi, I’m @fmny
+- 👋 Hi, I’m Francis Mauny
 - 👀 I’m interested in data science
 - 🌱 I’m currently learning R and Python
 - 💞️ I’m looking for collaborate on Python
