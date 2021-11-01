@@ -101,8 +101,8 @@ nrow(train)
 test <- anti_join(educ_small2, train) #prend les 20% restant
 nrow(test)
 #3708
-
-
+#14425
+#reprendre ici
 
 library(randomForest)
 set.seed(2811)
