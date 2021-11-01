@@ -1,5 +1,5 @@
 ################################################################
-#Utilisation de RandomForest en vue de faire de la pr?vision:
+#Utilisation de RandomForest en vue de faire de la prevision:
 ###############################################################
 
 #lien
@@ -25,7 +25,7 @@ library(dplyr)      # pour mutate_at et %>%
 library(tidyverse)
 library(tidyr)      # pour unnest et separate
 library(caret)
-#dplyr contient les op?rateurs %>% qui permettent le data wrangling (op?ration sur la BDD)
+#dplyr contient les op?rateurs %>% qui permettent le data wrangling (operation sur la BDD)
 
 
 
@@ -38,7 +38,7 @@ educ_small <- educ %>%
 
 
 
-#faire tourner ces op?rations 1 par 1 pour comprendre le data wrangling
+#faire tourner ces operations 1 par 1 pour comprendre le data wrangling
 
 educ_small_test <- educ_small %>% 
   mutate(Idx = 1:n()) %>%
@@ -51,11 +51,11 @@ select(-Idx) #retire la colonne Idx
 
 sum(educ_small$Nombre.agents)
 #[1] 43510    #sur le site data ancienne
-#[1] 87123    #r?sultat FM
+#[1] 87123    #resultat FM
 
 nrow(educ_small)
 #[1] 16248    #sur le site data ancienne
-#[1] 32107    #r?sultat FM
+#[1] 32107    #resultat FM
 
 
 
@@ -64,19 +64,18 @@ sum(educ_small_test$Nombre.agents)
 
 #on remplace Nombre.agents par 1 dans la colonne
 educ_small_test$Nombre.agents<-1
-#voir les modif du modele suite a ce changement
-#resultat, pas de modification
+
 
 #Mise en facteur des variables pour random forest
 
-#code FM-Twan
+
 educ_small2 <- educ_small
 ##avec ou sans IDX a la fin
 educ_small2 <- educ_small %>% mutate(Idx = 1:n()) %>%group_by(Idx) %>%mutate( Agent = list(rep( Sexe, Nombre.agents) ) )%>%unnest() %>%ungroup()
 ##educ_small2 <- educ_small2 %>% mutate(Idx = 1:n()) %>%group_by(Idx) %>%mutate( Agent = list(rep( Sexe, Nombre.agents) ) )%>%unnest() %>%ungroup()%>%select(-Idx)
 
 
-#code FM-Twan-Var quanti et var quali
+#Var quanti et var quali
 educ_small2$Type.etablissement   =  factor(educ_small2$Type.etablissement)
 educ_small2$Secteur.enseignement =  factor(educ_small2$Secteur.enseignement)
 educ_small2$Groupe.de.personnels =  factor(educ_small2$Groupe.de.personnels)
@@ -100,15 +99,14 @@ nrow(train)
 #69698
 test <- anti_join(educ_small2, train) #prend les 20% restant
 nrow(test)
-#3708
-#14425
-#reprendre ici
+#17425/87123=0.2000046
+
 
 library(randomForest)
 set.seed(2811)
 model <- randomForest(Titulaire ~ ., data = train, ntree = 100, na.action = na.omit)
 
-#500 est un peu long, je mets 100 arbres
+#500 est un peu long, je prends 100 arbres
 
 hist(model$oob.times)
 model$votes[1:10,]
@@ -116,7 +114,7 @@ model$importance
 varImpPlot(model)
 
 ############################################################
-#Utilisation de notre randomForest pour faire une pr?diction
+#Utilisation de notre randomForest pour faire une prediction
 ############################################################
 
 set.seed(2811)
@@ -128,40 +126,46 @@ summary(test$predicted)
 summary(test$Titulaire)
 nrow(test)
 
-
-
-#               Contractuel Titulaire
-#Contractuel        1446       172    (1618)
-#Titulaire           104      1928    (2032)
-#                   1550      2100    (3650)
-#vraie val          1563      2145    (3708) ?cart des NA en colonnes  
-
-#lecture du tableau
-# on a donc 1446 Contractuel bien predit et 172 mal predit (etaient des titulaires)
-#les bonnes predictions sont sur la diagonale
-
+#summary(test$predicted)
+#Contractuel   Titulaire        NA's 
+#       7776        9485         164 
+# summary(test$Titulaire)
+#Contractuel   Titulaire 
+#       7847        9578 
 
 
 summary(test$predicted)
 summary(test$Titulaire)
 nrow(test)
 
-#colonne de resultat des previsions titulaire et contractuel
-write.csv(test$predicted,file=".\\temp.csv")
-
+#Fichier des résulats avec la colonne de resultat des previsions titulaire et contractuel
+#write.csv(test$predicted,file=".\\temp.csv")
+write.csv(test,file=".\\test.csv")
 
 library(caret)
 conf <- confusionMatrix(data = test$predicted, reference = test$Titulaire)
 
 conf$byClass["Sensitivity"] #taux de vrais positifs
 
-#0.9329032 taux de bonnes predictions pour les contractuel (1446/1550 (sans les NA))
 
-conf$byClass["Specificity"] #taux de vrais n?gatifs
+
+#resultats refaits 164 NA dans la colonne region
+#nrow(test)-164 = 17261
+
+
+#conf$byClass["Sensitivity"] #taux de vrais positifs
+#Sensitivity 
+#0.9518874      #7439/7815
+#conf$byClass["Specificity"] #taux de vrais negatifs
 #Specificity 
-#0.9180952 = 1928/2100 taux de bonnes predictions pour les titulaires
+#0.9643235      #9109/9446
 
+#conf
+#              Reference
+#Prediction    Contractuel Titulaire
+#Contractuel        7439       337
+#Titulaire           376      9109
 
-
-
-
+#lecture du tableau
+# on a donc 7439 Contractuel bien predit et 337 mal predit (etaient des titulaires)
+#les bonnes predictions sont sur la diagonale
