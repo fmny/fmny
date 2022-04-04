@@ -1,7 +1,7 @@
 - 👋 Hi, I’m Francis Mauny
-- 👀 I’m interested in data analyse and data science
-- 🌱 I’m currently learning R and Python
-- 💞️ I’m looking for collaborate on Python
+- 👀 I’m interested in data analyse, data science and informatic development
+- 🌱 I’m currently learning JAVA/JEE, R and Python
+- 💞️ I’m looking for collaborate on R, Python or JAVA/JEE
 - 📫 How to reach me f_mauny@hotmail.fr
 
 <!---
